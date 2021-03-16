@@ -52,7 +52,8 @@ fun <A, B, C> partialA(a: A, f: (A) -> (B) -> C): (B) -> C = f(a)
 
 // 3.3.11
 data class Product(val name: String, val price: Price, val weight: Weight)
-class Price private constructor(private val value: Double) {
+
+data class Price private constructor(private val value: Double) {
 
     override fun toString() = value.toString()
     operator fun plus(other: Price) = Price(value + other.value)
@@ -62,13 +63,11 @@ class Price private constructor(private val value: Double) {
         val indentity = Price(0.0)
 
         operator fun invoke(value: Double) {
-
             if (value > 0) {
                 Price(value)
             } else {
                 throw IllegalArgumentException("Price must be a positive")
             }
-
         }
     }
 }
@@ -89,23 +88,6 @@ val zeroWeight = Weight(0.0)
 val zeroPrice = Price(0.0)
 val priceAddition = { x: Double, y: Double -> x + y }
 
-object Store {
-
-    @JvmStatic
-    fun main() {
-
-        val toothPaste = Product("Tooth paste", 1.5, 0.5)
-        val toothBrush = Product("Tooth brush", 3.5, 0.3)
-        val orderLines = listOf(
-            OrderLine(toothPaste, 2),
-            OrderLine(toothBrush, 3))
-        val weight = orderLines.sumByDouble { it.amount() }
-        val price = orderLines.sumByDouble { it.weight() }
-        println("Total price: $price")
-        println("Total weight: $weight")
-    }
-}
-
 fun main() {
 
     println(add(2)(5))
@@ -120,4 +102,6 @@ fun main() {
     println(tc9.compute(12.9))
     val tc9f = addTax(0.09)
     val price = tc9f(12.9)
+
+    val toothPaste = Product("Tooth paste", Price(0.4), Weight(12.3))
 }
